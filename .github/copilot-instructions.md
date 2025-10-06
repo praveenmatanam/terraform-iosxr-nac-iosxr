@@ -42,22 +42,17 @@ iosxr:
 
 ### Feature Configuration Types
 1. **List-based features** (multiple instances per device):
-   - Simple lists: OSPF processes, Banner configurations
-   - Complex nested lists: Key chains (with nested keys), Interfaces (with sub-interfaces)
+   - OSPF processes, BGP neighbors, Interfaces
    - Use list structure: `feature_name: [...]`
    
 2. **Single-instance features** (one per device):
-   - Global settings: Hostname, LACP, Logging, Domain
+   - Hostname, Domain settings, Global settings
    - Use object structure: `feature_name: {...}`
-
-3. **Hybrid features**:
-   - NTP: Can have multiple servers but single global config
-   - Uses mixed approach with both list and object patterns
 
 ## Terraform Code Patterns
 
 ### 1. List-Based Features (Multiple Instances)
-For features like OSPF, BGP, banner, key_chain that can have multiple instances per device:
+For features like OSPF, BGP, interfaces that can have multiple instances per device:
 
 ```terraform
 locals {
@@ -70,10 +65,10 @@ locals {
         # Map all attributes with defaults fallback
         attribute_name = try(<item>.attribute_name, local.defaults.iosxr.configuration.<feature_name>.attribute_name, null)
         
-        # Handle nested lists/objects (e.g., key_chain keys)
+        # Handle nested lists/objects
         nested_items = [
-          for nested in try(<item>.nested_items, []) : {
-            nested_attr = try(nested.nested_attr, local.defaults.iosxr.configuration.<feature_name>.nested_items.nested_attr, null)
+          for nested in try(<item>.nested_items, local.defaults.iosxr.configuration.<feature_name>.nested_items, []) : {
+            nested_attr = try(nested.nested_attr, local.defaults.iosxr.configuration.<feature_name>.nested_attr, null)
           }
         ]
       }
@@ -83,13 +78,8 @@ locals {
 }
 ```
 
-**Examples from actual codebase:**
-- **Banner**: `"${device.name}-${banner.banner_type}"` 
-- **Key Chain**: `"${device.name}-keychain-${key_chain.name}"`
-- **OSPF**: `"${device.name}-${ospf_process.process_name}"`
-
 ### 2. Single-Instance Features (Global Settings)
-For features like hostname, domain, LACP, logging that have one configuration per device:
+For features like hostname, domain, LACP that have one configuration per device:
 
 ```terraform
 resource "iosxr_<feature_name>" "<feature_name>" {
@@ -104,11 +94,6 @@ resource "iosxr_<feature_name>" "<feature_name>" {
   attribute_name = try(local.device_config[each.value.name].<feature_name>.attribute_name, local.defaults.iosxr.configuration.<feature_name>.attribute_name, null)
 }
 ```
-
-**Examples from actual codebase:**
-- **Hostname**: Single string value per device
-- **Logging**: Multiple attributes but single instance per device
-- **LACP**: System-wide settings, one configuration per device
 
 ### 3. Resource Block Structure for List-Based Features
 ```terraform
@@ -142,30 +127,6 @@ local.defaults.iosxr.configuration.<feature_name>_attribute_name
 Always use this pattern for attribute mapping:
 ```terraform
 attribute_name = try(item.attribute_name, local.defaults.iosxr.configuration.<feature_name>.attribute_name, null)
-```
-
-### Inconsistent Patterns Found in Existing Code
-Some older modules use inconsistent patterns that should be avoided:
-
-**❌ AVOID: Flat defaults structure (found in interface.tf)**
-```terraform
-# OLD PATTERN - Don't use
-local.defaults.iosxr.configuration.interface_mtu
-```
-
-**❌ AVOID: Mixed defaults patterns (found in banner.tf)**
-```terraform
-# INCONSISTENT PATTERN - Don't replicate
-try(banner.banner_type, local.defaults.iosxr.configuration.banner_type, null)
-try(local.device_config[device.name].banner, local.defaults.iosxr.configuration.banner, [])
-```
-
-**✅ USE: Nested defaults structure**
-```terraform
-# NEW PATTERN - Use this
-local.defaults.iosxr.configuration.interface.mtu
-local.defaults.iosxr.configuration.banner.banner_type
-local.defaults.iosxr.configuration.key_chain.keys.key_name
 ```
 
 ## Naming Conventions
@@ -215,33 +176,6 @@ if try(local.device_config[device.name].<feature_name>, null) != null
 - Verify resource key generation is correct
 - Test both apply and destroy operations
 - Validate on actual IOS XR devices when possible
-
-## Advanced Configuration Patterns
-
-### Interface Groups and Complex Merging
-Some modules support complex configuration merging with YAML references:
-
-```terraform
-# Example from iosxr_interface.tf
-interface_groups = try(local.device_config[device.name].interface_groups, {})
-merged_config    = try(local.device_config[device.name].interfaces[each.key], yamldecode(yaml_merge(
-  yamlencode(local.interface_groups[each.value.interface_group]),
-  yamlencode(local.device_config[device.name].interfaces[each.key])
-)), {})
-```
-
-This pattern allows:
-- Interface group templates with shared configurations
-- Per-interface overrides that merge with group settings
-- Complex YAML structure handling with `yamldecode` and `yaml_merge`
-
-### Pre-commit Hook Integration
-The project uses automated code quality checks:
-- `terraform fmt`: Automatic formatting
-- `tflint`: Linting and validation 
-- `terraform-docs`: Documentation generation
-
-Ensure all modules comply with these standards.
 
 ## Code Quality Standards
 
