@@ -317,23 +317,6 @@ Use environment variables:
 - Validate device certificates when possible
 - Use secure protocols for device communication
 
-## Continuous Learning Protocol
-
-### Documentation Evolution
-- **Always update this file immediately** when discovering new patterns, issues, or solutions
-- Document workarounds for provider limitations or IOS XR quirks
-- Record debugging techniques that prove effective
-- Note performance optimizations discovered during testing
-- Capture configuration patterns that work well in production
-
-### Learning Categories to Track
-1. **Provider Behavior**: Undocumented IOS XR provider behaviors or limitations
-2. **Device Quirks**: IOS XR device-specific configuration requirements
-3. **Performance Patterns**: Terraform resource management optimizations
-4. **Debugging Techniques**: Effective troubleshooting approaches
-5. **Configuration Patterns**: YAML structure patterns that work well
-6. **Testing Insights**: Validation approaches for complex configurations
-
 ---
 
 ## Quick Reference
@@ -347,7 +330,6 @@ Use environment variables:
 - [ ] Test on actual IOS XR device
 - [ ] Verify terraform fmt compliance
 - [ ] Document any feature-specific patterns
-- [ ] **Update copilot-instructions.md with new learnings**
 
 ### Key Generation Formula
 ```
