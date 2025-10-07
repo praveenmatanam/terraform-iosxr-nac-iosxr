@@ -21,7 +21,6 @@ locals {
         fast_reroute_per_prefix_tiebreaker_node_protecting = try(router_ospf_area_interface.fast_reroute_per_prefix_tiebreaker_node_protecting, local.defaults.iosxr.configuration.router_ospf_area_interface.fast_reroute_per_prefix_tiebreaker_node_protecting, null)
         prefix_sid_algorithms                              = try(router_ospf_area_interface.prefix_sid_algorithms, local.defaults.iosxr.configuration.router_ospf_area_interface.prefix_sid_algorithms, null)
         prefix_sid_strict_spf_index                        = try(router_ospf_area_interface.prefix_sid_strict_spf_index, local.defaults.iosxr.configuration.router_ospf_area_interface.prefix_sid_strict_spf_index, null)
-        delete_mode                                        = try(router_ospf_area_interface.delete_mode, local.defaults.iosxr.configuration.router_ospf_area_interface.delete_mode, null)
       }
     ]
   ])
@@ -48,5 +47,4 @@ resource "iosxr_router_ospf_area_interface" "router_ospf_area_interface" {
   fast_reroute_per_prefix_tiebreaker_node_protecting = each.value.fast_reroute_per_prefix_tiebreaker_node_protecting
   prefix_sid_algorithms                              = each.value.prefix_sid_algorithms
   prefix_sid_strict_spf_index                        = each.value.prefix_sid_strict_spf_index
-  delete_mode                                        = each.value.delete_mode
 }
