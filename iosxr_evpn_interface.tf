@@ -6,17 +6,17 @@ locals {
         interface_name = evpn_interface.interface_name
         key            = "${device.name}-${evpn_interface.interface_name}"
 
-        core_isolation_group                                    = try(evpn_interface.core_isolation_group, local.defaults.iosxr.configuration.evpn_interface_core_isolation_group, null)
-        ethernet_segment_identifier_type_zero_bytes_1           = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_1, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_identifier_type_zero_bytes_1, null)
-        ethernet_segment_identifier_type_zero_bytes_23          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_23, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_identifier_type_zero_bytes_23, null)
-        ethernet_segment_identifier_type_zero_bytes_45          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_45, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_identifier_type_zero_bytes_45, null)
-        ethernet_segment_identifier_type_zero_bytes_67          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_67, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_identifier_type_zero_bytes_67, null)
-        ethernet_segment_identifier_type_zero_bytes_89          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_89, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_identifier_type_zero_bytes_89, null)
-        ethernet_segment_identifier_type_zero_esi               = try(evpn_interface.ethernet_segment_identifier_type_zero_esi, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_identifier_type_zero_esi, null)
-        ethernet_segment_load_balancing_mode_all_active         = try(evpn_interface.ethernet_segment_load_balancing_mode_all_active, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_load_balancing_mode_all_active, null)
-        ethernet_segment_load_balancing_mode_port_active        = try(evpn_interface.ethernet_segment_load_balancing_mode_port_active, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_load_balancing_mode_port_active, null)
-        ethernet_segment_load_balancing_mode_single_active      = try(evpn_interface.ethernet_segment_load_balancing_mode_single_active, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_load_balancing_mode_single_active, null)
-        ethernet_segment_load_balancing_mode_single_flow_active = try(evpn_interface.ethernet_segment_load_balancing_mode_single_flow_active, local.defaults.iosxr.configuration.evpn_interface_ethernet_segment_load_balancing_mode_single_flow_active, null)
+        core_isolation_group                                    = try(evpn_interface.core_isolation_group, local.defaults.iosxr.configuration.evpn_interface.core_isolation_group, null)
+        ethernet_segment_identifier_type_zero_bytes_1           = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_1, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_identifier_type_zero_bytes_1, null)
+        ethernet_segment_identifier_type_zero_bytes_23          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_23, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_identifier_type_zero_bytes_23, null)
+        ethernet_segment_identifier_type_zero_bytes_45          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_45, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_identifier_type_zero_bytes_45, null)
+        ethernet_segment_identifier_type_zero_bytes_67          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_67, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_identifier_type_zero_bytes_67, null)
+        ethernet_segment_identifier_type_zero_bytes_89          = try(evpn_interface.ethernet_segment_identifier_type_zero_bytes_89, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_identifier_type_zero_bytes_89, null)
+        ethernet_segment_identifier_type_zero_esi               = try(evpn_interface.ethernet_segment_identifier_type_zero_esi, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_identifier_type_zero_esi, null)
+        ethernet_segment_load_balancing_mode_all_active         = try(evpn_interface.ethernet_segment_load_balancing_mode_all_active, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_load_balancing_mode_all_active, null)
+        ethernet_segment_load_balancing_mode_port_active        = try(evpn_interface.ethernet_segment_load_balancing_mode_port_active, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_load_balancing_mode_port_active, null)
+        ethernet_segment_load_balancing_mode_single_active      = try(evpn_interface.ethernet_segment_load_balancing_mode_single_active, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_load_balancing_mode_single_active, null)
+        ethernet_segment_load_balancing_mode_single_flow_active = try(evpn_interface.ethernet_segment_load_balancing_mode_single_flow_active, local.defaults.iosxr.configuration.evpn_interface.ethernet_segment_load_balancing_mode_single_flow_active, null)
       }
     ]
   ])
