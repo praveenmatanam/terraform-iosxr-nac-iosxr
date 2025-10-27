@@ -1,3 +1,4 @@
 defaults:
   iosxr:
-    configuration:
+    devices:
+      configuration:
